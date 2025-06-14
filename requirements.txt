@@ -10,7 +10,7 @@ asn1crypto==1.5.1
 attrs==24.2.0
 bip-utils==2.9.3
 cbor2==5.6.5
-certifi==2024.8.30
+certifi==2023.11.17
 cffi==1.17.1
 charset-normalizer==3.4.0
 click==8.1.8
