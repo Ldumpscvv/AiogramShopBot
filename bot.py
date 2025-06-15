@@ -19,7 +19,6 @@ bot = Bot(config.TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher(storage=RedisStorage(redis))
 app = FastAPI()
 
-
 @app.post(config.WEBHOOK_PATH)
 async def webhook(request: Request):
     secret_token = request.headers.get("X-Telegram-Bot-Api-Secret-Token")
@@ -34,7 +33,6 @@ async def webhook(request: Request):
         logging.error(f"Error processing webhook: {e}")
         return {"status": "error"}, status.HTTP_500_INTERNAL_SERVER_ERROR
 
-
 @app.on_event("startup")
 async def on_startup():
     await create_db_and_tables()
@@ -48,14 +46,12 @@ async def on_startup():
         except Exception as e:
             logging.warning(e)
 
-
 @app.on_event("shutdown")
 async def on_shutdown():
     logging.warning('Shutting down..')
     await bot.delete_webhook()
     await dp.storage.close()
     logging.warning('Bye!')
-
 
 @app.exception_handler(Exception)
 async def exception_handler(request: Request, exc: Exception):
@@ -72,7 +68,6 @@ async def exception_handler(request: Request, exc: Exception):
         status_code=500,
         content={"message": f"An error occurred: {str(exc)}"},
     )
-
 
 def main() -> None:
     uvicorn.run(app, host=config.WEBAPP_HOST, port=config.WEBAPP_PORT)
