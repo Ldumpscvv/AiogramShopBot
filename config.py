@@ -1,25 +1,27 @@
 import os
-
 from dotenv import load_dotenv
 
 from enums.currency import Currency
 from enums.runtime_environment import RuntimeEnvironment
-from external_ip import get_sslipio_external_url
-from ngrok_executor import start_ngrok
 
 load_dotenv(".env")
+
+# Runtime Umgebung
 RUNTIME_ENVIRONMENT = RuntimeEnvironment(os.environ.get("RUNTIME_ENVIRONMENT"))
-if RUNTIME_ENVIRONMENT == RuntimeEnvironment.DEV:
-    WEBHOOK_HOST = start_ngrok()
-else:
-    WEBHOOK_HOST = get_sslipio_external_url()
+
+# Fixe Webhook URL (keine ngrok oder sslip.io)
+WEBHOOK_HOST = os.environ.get("WEBHOOK_HOST")  # Manuell in .env eintragen
 WEBHOOK_PATH = os.environ.get("WEBHOOK_PATH")
 WEBAPP_HOST = os.environ.get("WEBAPP_HOST")
 WEBAPP_PORT = int(os.environ.get("WEBAPP_PORT"))
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+
+# Bot-Zeug
 TOKEN = os.environ.get("TOKEN")
 ADMIN_ID_LIST = os.environ.get("ADMIN_ID_LIST").split(',')
 ADMIN_ID_LIST = [int(admin_id) for admin_id in ADMIN_ID_LIST]
+
+# Optionales
 SUPPORT_LINK = os.environ.get("SUPPORT_LINK")
 DB_ENCRYPTION = os.environ.get("DB_ENCRYPTION", False) == 'true'
 DB_NAME = os.environ.get("DB_NAME")
